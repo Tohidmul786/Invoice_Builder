@@ -1,0 +1,12 @@
+project_id = "quafwmtnblkpqxajnmph"
+
+# Both functions receive Firebase ID tokens, not Supabase auth tokens.
+# We verify them ourselves inside each function (see
+# supabase/functions/api/_shared/verifyFirebaseToken.ts), so Supabase's
+# own platform-level JWT check must be disabled here — otherwise its
+# gateway rejects the request before our code ever runs.
+[functions.api]
+verify_jwt = false
+
+[functions.send-invoice]
+verify_jwt = false
