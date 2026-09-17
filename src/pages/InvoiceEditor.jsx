@@ -20,7 +20,7 @@ export default function InvoiceEditor() {
     invoiceNo: `INV-${Date.now().toString().slice(-6)}`,
     issueDate: todayISO(), dueDate: dueDateISO(),
     taxPercent: 0, discount: 0,
-    notes: "1) Payment to be made by cash or account payee cheque.\n2) Subject to local jurisdiction.",
+    notes: "1) Payment to be made by cash or account payee's cheque.\n2) Subject to local jurisdiction.\n3)No warranty covered pn physical damage and burned.\n4)Cheque return charges will be RS.350/-",
   });
   const [items, setItems] = useState([emptyItem()]);
 
