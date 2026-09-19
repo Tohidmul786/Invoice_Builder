@@ -46,7 +46,9 @@ export default function InvoicePreview({ business, client, meta, items, subtotal
           {business?.email && <div>Email : {business.email}</div>}
         </div>
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: "26px", fontWeight: "900", letterSpacing: "3px", color: "#000" }}>INVOICE</div>
+          <div style={{ fontSize: "26px", fontWeight: "900", letterSpacing: "3px", color: "#000" }}>
+            {meta?.docType || "INVOICE"}
+          </div>
         </div>
       </div>
 

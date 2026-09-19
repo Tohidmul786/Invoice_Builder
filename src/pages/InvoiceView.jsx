@@ -75,7 +75,7 @@ export default function InvoiceView() {
         <InvoicePreview
           business={{ name: invoice.business_name, address: invoice.business_address, email: invoice.business_email, phone: invoice.business_phone }}
           client={{ name: invoice.client_name, email: invoice.client_email, address: invoice.client_address }}
-          meta={{ invoiceNo: invoice.invoice_no, issueDate: invoice.issue_date, dueDate: invoice.due_date, notes: invoice.notes }}
+          meta={{ invoiceNo: invoice.invoice_no, issueDate: invoice.issue_date, dueDate: invoice.due_date, notes: invoice.notes, docType: invoice.doc_type || "INVOICE", }}
           items={items}
           subtotal={subtotal}
           taxAmount={0}

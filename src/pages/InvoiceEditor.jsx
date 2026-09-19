@@ -20,6 +20,7 @@ export default function InvoiceEditor() {
     invoiceNo: `INV-${Date.now().toString().slice(-6)}`,
     issueDate: todayISO(), dueDate: dueDateISO(),
     taxPercent: 0, discount: 0,
+    docType: "INVOICE",
     notes: "\n1) Payment to be made by cash or account payee's cheque.\n2) Subject to local jurisdiction.\n3)No warranty covered pn physical damage and burned.\n4)Cheque return charges will be RS.350/-",
   });
   const [items, setItems] = useState([emptyItem()]);
@@ -34,7 +35,7 @@ export default function InvoiceEditor() {
         address: p.business_address || prev.address,
         phone: p.business_phone || prev.phone,
       }));
-    }).catch(() => {});
+    }).catch(() => { });
   }, [user]);
 
   const updateItem = (id, field, value) => setItems((prev) => prev.map((i) => i.id === id ? { ...i, [field]: value } : i));
@@ -68,7 +69,9 @@ export default function InvoiceEditor() {
           client_address: client.address,
           issue_date: meta.issueDate,
           due_date: meta.dueDate,
-          status, notes: meta.notes,
+          status, 
+          notes: meta.notes,
+          doc_type:meta.docType || "INVOICE",
         },
         items.map((item) => ({
           description: item.description,
@@ -130,6 +133,29 @@ export default function InvoiceEditor() {
 
           {/* Invoice Details */}
           <Section title="Invoice Details">
+            <Field label="Document Type">
+              <div className="flex gap-2">
+                {["INVOICE", "QUOTATION", "ESTIMATE", "RECEIPT"].map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => setMeta({ ...meta, docType: type })}
+                    className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${meta.docType === type
+                        ? "border-brand-600 bg-brand-600 text-white"
+                        : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50"
+                      }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+              <input
+                className="input-field mt-2"
+                value={meta.docType}
+                onChange={(e) => setMeta({ ...meta, docType: e.target.value.toUpperCase() })}
+                placeholder="Or type custom e.g. PROFORMA INVOICE"
+              />
+            </Field>
             <div className="grid grid-cols-3 gap-3">
               <Field label="Ref No."><input className="input-field" value={meta.invoiceNo} onChange={(e) => setMeta({ ...meta, invoiceNo: e.target.value })} /></Field>
               <Field label="Date"><input type="date" className="input-field" value={meta.issueDate} onChange={(e) => setMeta({ ...meta, issueDate: e.target.value })} /></Field>
@@ -144,7 +170,7 @@ export default function InvoiceEditor() {
                 <div key={item.id} className="grid grid-cols-12 items-center gap-2">
                   <input className="input-field col-span-6" placeholder="Description" value={item.description} onChange={(e) => updateItem(item.id, "description", e.target.value)} />
                   <input type="number" min="0" className="input-field col-span-2" placeholder="Qty" value={item.quantity} onChange={(e) => updateItem(item.id, "quantity", e.target.value)} />
-                  <input type="number" min="0" className="input-field col-span-3" placeholder="Amount" value={item.unit_price} onChange={(e) => updateItem(item.id, "unit_price", e.target.value)} />
+                  <input type="number" className="input-field col-span-3" placeholder="Amount" value={item.unit_price} onChange={(e) => updateItem(item.id, "unit_price", e.target.value)} />
                   <button onClick={() => removeItem(item.id)} className="col-span-1 text-slate-400 hover:text-red-500">✕</button>
                 </div>
               ))}
